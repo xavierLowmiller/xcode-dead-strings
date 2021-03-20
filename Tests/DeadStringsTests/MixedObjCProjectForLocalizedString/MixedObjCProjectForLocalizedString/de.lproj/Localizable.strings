@@ -1,0 +1,14 @@
+/* ObjC View Controller */
+"push_first_vc" = "Swift View Controller anzeigen";
+"my_view_controller" = "Mein View Controller";
+
+/* Swift View Controller */
+"my_swift_view_controller" = "Mein Swift View Controller";
+"push_second_vc" = "SwiftUI View anzeigen";
+
+/* SwiftUI View */
+"login_title" = "Einloggen";
+"mail_address_placeholder" = "Mailaddresse";
+"password_placeholder" = "Passwort";
+"swiftui_view_title" = "Mein SwiftUI View";
+"dead_string" = "Toter String";
