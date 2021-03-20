@@ -1,7 +1,7 @@
 import XCTest
 @testable import DeadStrings
 
-final class FileParserTests: XCTestCase {
+final class ExtractStringsTests: XCTestCase {
     func testStringExtractionFromSwiftFile() {
         let swiftFile = ##"""
         //

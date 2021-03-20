@@ -12,3 +12,6 @@
 "password_placeholder" = "Password";
 "swiftui_view_title" = "My SwiftUI View";
 "dead_string" = "Dead String";
+
+/* en only */
+"en_only" = "English only";
