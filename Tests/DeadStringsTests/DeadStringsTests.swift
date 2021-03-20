@@ -1,7 +1,19 @@
 import XCTest
+@testable import DeadStrings
 import class Foundation.Bundle
 
 final class DeadStringsTests: XCTestCase {
+    func testExtractDeadStrings() {
+        let url = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("MixedObjCProjectForLocalizedString")
+
+        let deadStrings = extractDeadStrings(at: url)
+
+        XCTAssertEqual(deadStrings, ["dead_string", "en_only", "de_only"])
+    }
+
     func DISABLEDtestExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct

@@ -19,7 +19,7 @@ func extractLocalizedKeys(from string: String) -> Set<Substring> {
 func extractLocalizedKeys(fromFileAt url: URL) -> Set<Substring> {
     guard let data = FileManager.default.contents(atPath: url.path) else { return [] }
     let contents = String(decoding: data, as: UTF8.self)
-    return extractStrings(from: contents)
+    return extractLocalizedKeys(from: contents)
 }
 
 func extractLocalizedKeys(fromFilesAt url: URL) -> Set<Substring> {
@@ -28,7 +28,7 @@ func extractLocalizedKeys(fromFilesAt url: URL) -> Set<Substring> {
     var strings: Set<Substring> = []
     while let filename = enumerator?.nextObject() as? String {
         guard filename.hasSupportedSuffix else { continue }
-        strings.formUnion(extractStrings(fromFileAt: url.appendingPathComponent(filename)))
+        strings.formUnion(extractLocalizedKeys(fromFileAt: url.appendingPathComponent(filename)))
     }
 
     return strings
