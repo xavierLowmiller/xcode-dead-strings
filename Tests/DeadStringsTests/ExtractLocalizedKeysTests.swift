@@ -50,7 +50,10 @@ final class ExtractLocalizedKeysTests: XCTestCase {
             .deletingLastPathComponent()
             .appendingPathComponent("MixedObjCProjectForLocalizedString")
 
-        let strings = extractLocalizedKeys(fromFilesAt: url)
+        let stringsByFile = extractLocalizedKeys(fromFilesAt: url)
+        let strings: Set<Substring> = stringsByFile.reduce(into: []) {
+            $0.formUnion($1.value)
+        }
 
         // ObjC View Controller
         XCTAssert(strings.contains("push_first_vc"))

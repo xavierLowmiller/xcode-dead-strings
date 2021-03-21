@@ -22,13 +22,14 @@ func extractLocalizedKeys(fromFileAt url: URL) -> Set<Substring> {
     return extractLocalizedKeys(from: contents)
 }
 
-func extractLocalizedKeys(fromFilesAt url: URL) -> Set<Substring> {
+func extractLocalizedKeys(fromFilesAt url: URL) -> [URL: Set<Substring>] {
     let enumerator = FileManager.default.enumerator(atPath: url.path)
 
-    var strings: Set<Substring> = []
+    var strings: [URL: Set<Substring>] = [:]
     while let filename = enumerator?.nextObject() as? String {
         guard filename.hasSupportedSuffix else { continue }
-        strings.formUnion(extractLocalizedKeys(fromFileAt: url.appendingPathComponent(filename)))
+        let fileUrl = url.appendingPathComponent(filename)
+        strings[fileUrl] = extractLocalizedKeys(fromFileAt: fileUrl)
     }
 
     return strings

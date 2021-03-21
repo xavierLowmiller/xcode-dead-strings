@@ -15,8 +15,8 @@ struct DeadStrings: ParsableCommand {
         guard let url = URL(string: FileManager.default.currentDirectoryPath)?.appendingPathComponent(path)
         else { throw RuntimeError.invalidPath(path: path) }
 
-        let deadStrings = extractDeadStrings(at: url)
-        print(deadStrings)
+        let deadStringData = extractDeadStrings(at: url)
+        print(deadStringData.descriptionByFile)
     }
 }
 
