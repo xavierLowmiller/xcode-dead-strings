@@ -16,7 +16,10 @@ struct DeadStrings: ParsableCommand {
         else { throw RuntimeError.invalidPath(path: path) }
 
         let deadStringData = extractDeadStrings(at: url)
-        print(deadStringData.descriptionByFile)
+
+        if !silent {
+            print(deadStringData.descriptionByFile)
+        }
     }
 }
 
