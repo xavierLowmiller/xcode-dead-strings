@@ -71,6 +71,38 @@ final class ExtractStringsTests: XCTestCase {
         XCTAssert(parsedStrings.contains("test"))
     }
 
+    func testStringExtractionFromPlistFile() {
+        let plistFile = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>CFBundleDevelopmentRegion</key>
+            <string>en</string>
+            <key>NSCameraUsageDescription</key>
+            <string>Wanna take pictures? Enable the camera!</string>
+            <key>NSFaceIDUsageDescription</key>
+            <string>Use FaceID to log in</string>
+            <key>NSLocationWhenInUseUsageDescription</key>
+            <string>Find yourself more easily</string>
+            <key>NSPhotoLibraryUsageDescription</key>
+            <string>For picking images to upload</string>
+            <key>UIUserInterfaceStyle</key>
+            <string>Light</string>
+        </dict>
+        </plist>
+        """
+
+        let strings = extractStrings(from: plistFile, isPlist: true)
+
+        XCTAssert(strings.contains("CFBundleDevelopmentRegion"))
+        XCTAssert(strings.contains("NSCameraUsageDescription"))
+        XCTAssert(strings.contains("NSFaceIDUsageDescription"))
+        XCTAssert(strings.contains("NSLocationWhenInUseUsageDescription"))
+        XCTAssert(strings.contains("NSPhotoLibraryUsageDescription"))
+        XCTAssert(strings.contains("UIUserInterfaceStyle"))
+    }
+
     func testExtractingStringsFromFile() {
         let url = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
