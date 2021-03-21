@@ -12,7 +12,7 @@ struct DeadStrings: ParsableCommand {
     var silent: Bool = false
 
     mutating func run() throws {
-        guard let url = URL(string: FileManager.default.currentDirectoryPath)?.appendingPathComponent(path)
+        guard let url = URL(string: path)
         else { throw RuntimeError.invalidPath(path: path) }
 
         let deadStringData = extractDeadStrings(at: url)
