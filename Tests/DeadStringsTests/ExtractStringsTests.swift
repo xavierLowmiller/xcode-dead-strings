@@ -22,7 +22,7 @@ final class ExtractStringsTests: XCTestCase {
                     TextField("Mail Address", text: $mail)
                         .disabled(true)
                         .border(Color.black, width: 1)
-                    SecureField("Password", text: $password)
+                    SecureField("Password!?#123", text: $password)
                         .border(Color.black, width: 1)
                 }.padding()
             }
@@ -40,7 +40,7 @@ final class ExtractStringsTests: XCTestCase {
 //        XCTAssert(parsedStrings.contains(""))
 //        XCTAssert(parsedStrings.contains("a@b.com"))
         XCTAssert(parsedStrings.contains("Mail Address"))
-        XCTAssert(parsedStrings.contains("Password"))
+        XCTAssert(parsedStrings.contains("Password!?#123"))
         XCTAssert(parsedStrings.contains("secret"))
     }
 

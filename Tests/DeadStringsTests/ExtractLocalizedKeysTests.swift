@@ -7,12 +7,16 @@ final class ExtractLocalizedKeysTests: XCTestCase {
         /* Swift View Controller */
         "my_swift_view_controller" = "My Swift View Controller";
         "push_second_vc" = "Show SwiftUI View";
+        "Some sentence (that includes) punctuation.?!" = "Some sentence (that includes) punctuation.?!";
+        "and a comment" = "and a comment"; // Comment
         """##
 
         let parsedStrings = extractLocalizedKeys(from: localizedStringsFile)
 
         XCTAssert(parsedStrings.contains("my_swift_view_controller"))
         XCTAssert(parsedStrings.contains("push_second_vc"))
+        XCTAssert(parsedStrings.contains("Some sentence (that includes) punctuation.?!"))
+        XCTAssert(parsedStrings.contains("and a comment"))
     }
 
     func testExtractingStringsFromFile() throws {
