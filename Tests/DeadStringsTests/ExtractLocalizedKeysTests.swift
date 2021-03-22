@@ -15,7 +15,7 @@ final class ExtractLocalizedKeysTests: XCTestCase {
         XCTAssert(parsedStrings.contains("push_second_vc"))
     }
 
-    func testExtractingStringsFromFile() {
+    func testExtractingStringsFromFile() throws {
         let url = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
@@ -24,7 +24,7 @@ final class ExtractLocalizedKeysTests: XCTestCase {
             .appendingPathComponent("en.lproj")
             .appendingPathComponent("Localizable.strings")
 
-        let strings = extractStrings(fromFileAt: url)
+        let strings = try extractStrings(fromFileAt: url)
 
         // ObjC View Controller
         XCTAssert(strings.contains("push_first_vc"))

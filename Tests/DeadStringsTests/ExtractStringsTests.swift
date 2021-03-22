@@ -71,7 +71,7 @@ final class ExtractStringsTests: XCTestCase {
         XCTAssert(parsedStrings.contains("test"))
     }
 
-    func testStringExtractionFromPlistFile() {
+    func testStringExtractionFromPlistFile() throws {
         let plistFile = """
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -91,9 +91,9 @@ final class ExtractStringsTests: XCTestCase {
             <string>Light</string>
         </dict>
         </plist>
-        """
+        """.data(using: .utf8)!
 
-        let strings = extractStrings(from: plistFile, isPlist: true)
+        let strings = try extractStrings(from: plistFile)
 
         XCTAssert(strings.contains("CFBundleDevelopmentRegion"))
         XCTAssert(strings.contains("NSCameraUsageDescription"))
@@ -103,7 +103,7 @@ final class ExtractStringsTests: XCTestCase {
         XCTAssert(strings.contains("UIUserInterfaceStyle"))
     }
 
-    func testExtractingStringsFromFile() {
+    func testExtractingStringsFromFile() throws {
         let url = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
@@ -111,18 +111,18 @@ final class ExtractStringsTests: XCTestCase {
             .appendingPathComponent("MixedObjCProjectForLocalizedString")
             .appendingPathComponent("AppDelegate.m")
 
-        let strings = extractStrings(fromFileAt: url)
+        let strings = try extractStrings(fromFileAt: url)
 
         XCTAssert(strings.contains("Default Configuration"))
     }
 
-    func testExtractingStringsFromActualProject() {
+    func testExtractingStringsFromActualProject() throws {
         let url = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .appendingPathComponent("MixedObjCProjectForLocalizedString")
 
-        let strings = extractStrings(fromFilesAt: url)
+        let strings = try extractStrings(fromFilesAt: url)
 
         // ViewController.m
         XCTAssert(strings.contains("push_first_vc"))

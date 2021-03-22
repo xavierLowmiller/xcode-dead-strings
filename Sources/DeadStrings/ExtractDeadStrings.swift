@@ -1,7 +1,7 @@
 import Foundation
 
-public func extractDeadStrings(at url: URL) -> DeadStringsData {
-    let strings = extractStrings(fromFilesAt: url)
+public func extractDeadStrings(at url: URL) throws -> DeadStringsData {
+    let strings = try extractStrings(fromFilesAt: url)
     let localizedKeys = extractLocalizedKeys(fromFilesAt: url)
 
     let allLocalizedKeys: Set<Substring> = localizedKeys.reduce(into: []) {

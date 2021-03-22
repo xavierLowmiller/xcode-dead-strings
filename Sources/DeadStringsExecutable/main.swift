@@ -11,14 +11,21 @@ struct DeadStrings: ParsableCommand {
     @Flag(help: "Should output be silenced?")
     var silent: Bool = false
 
+    @Flag(help: "Delete dead strings from .strings files automatically")
+    var write: Bool = false
+
     mutating func run() throws {
         guard let url = URL(string: path)
         else { throw RuntimeError.invalidPath(path: path) }
 
-        let deadStringData = extractDeadStrings(at: url)
+        let deadStringData = try extractDeadStrings(at: url)
 
         if !silent {
             print(deadStringData.descriptionByFile)
+        }
+
+        if write {
+            try deleteDeadStrings(deadStringData.deadStrings, inFilesAt: url)
         }
     }
 }
