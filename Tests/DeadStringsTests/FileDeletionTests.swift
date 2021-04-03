@@ -14,7 +14,10 @@ final class FileDeletionTests: XCTestCase {
     "valid_string" = "Valid String";
 
     "dead_string_3" = "A dead string";
+
+    "dead\nstring\nwith\nnewlines" = "dead\nstring\nwith\nnewlines";
     """
+
     private let testStringsFileURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         .appendingPathComponent("testFile.strings")
 
@@ -36,7 +39,12 @@ final class FileDeletionTests: XCTestCase {
 
     func testFileDeletionInFileContents() {
         // Given
-        let deadStrings: Set<Substring> = ["dead_string", "dead_string_2", "dead_string_3"]
+        let deadStrings: Set<Substring> = [
+            "dead_string",
+            "dead_string_2",
+            "dead_string_3",
+            "dead\nstring\nwith\nnewlines"
+        ]
 
         let expected = """
         /* Some valid strings */
@@ -55,7 +63,12 @@ final class FileDeletionTests: XCTestCase {
 
     func testFileDeletionInFile() throws {
         // Given
-        let deadStrings: Set<Substring> = ["dead_string", "dead_string_2", "dead_string_3"]
+        let deadStrings: Set<Substring> = [
+            "dead_string",
+            "dead_string_2",
+            "dead_string_3",
+            "dead\nstring\nwith\nnewlines"
+        ]
 
         let expected = """
         /* Some valid strings */

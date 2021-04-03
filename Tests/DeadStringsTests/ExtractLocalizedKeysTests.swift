@@ -9,6 +9,8 @@ final class ExtractLocalizedKeysTests: XCTestCase {
         "push_second_vc" = "Show SwiftUI View";
         "Some sentence (that includes) punctuation.?!" = "Some sentence (that includes) punctuation.?!";
         "and a comment" = "and a comment"; // Comment
+        "what\nabout\nnewlines" = "what\nabout\nnewlines";
+        "ümlauts-dash;:.\n" = "ümlauts-dash;:\n";
         """##
 
         let parsedStrings = extractLocalizedKeys(from: localizedStringsFile)
@@ -17,6 +19,8 @@ final class ExtractLocalizedKeysTests: XCTestCase {
         XCTAssert(parsedStrings.contains("push_second_vc"))
         XCTAssert(parsedStrings.contains("Some sentence (that includes) punctuation.?!"))
         XCTAssert(parsedStrings.contains("and a comment"))
+        XCTAssert(parsedStrings.contains(#"what\nabout\nnewlines"#))
+        XCTAssert(parsedStrings.contains(#"ümlauts-dash;:.\n"#))
     }
 
     func testExtractingStringsFromFile() throws {

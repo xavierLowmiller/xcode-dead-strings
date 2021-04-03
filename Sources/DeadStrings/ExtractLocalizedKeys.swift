@@ -1,7 +1,7 @@
 import Foundation
 
 func extractLocalizedKeys(from string: String) -> Set<Substring> {
-    return Set(string.matches(for: #"(?<=\")[^\"]+(?=\"\s*=)"#))
+    return Set(string.matches(for: #"(?<=\")[^\"]*+(?=\"\s*=)"#))
 }
 
 func extractLocalizedKeys(fromFileAt url: URL) -> Set<Substring> {

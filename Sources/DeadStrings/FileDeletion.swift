@@ -1,12 +1,30 @@
 import Foundation
 
 func deleteDeadStrings(_ deadStrings: Set<Substring>, in file: String) -> String {
-    var copy = file
+    let file = NSMutableString(string: file)
     for stringToDelete in deadStrings {
-        let pattern = #"(?<=;)\n[^;]*\""# + stringToDelete + #"\"\s=[^\n]*;"#
-        copy = copy.replacingOccurrences(of: pattern, with: "", options: [.regularExpression])
+        let escaped = NSRegularExpression.escapedPattern(for: String(stringToDelete))
+            .replacingOccurrences(of: "\n", with: #"\n"#)
+        let pattern = ##"""
+        # After a Semicolon
+        (?<=;)\s*+
+        # Skip whitespace and comments until the string begins
+        (\s|\/\*.*\*\/)*+\"
+        """## + escaped + ##"""
+        # If match, skip everything...
+        \"\s*+=[^;]*
+        # ...until the next localized String value ends
+        \"\s*+;(?=\s*+)
+        """##
+
+        let regex = try! NSRegularExpression(
+            pattern: pattern,
+            options: [.allowCommentsAndWhitespace]
+        )
+        let range = NSRange(location: 0, length: file.length)
+        regex.replaceMatches(in: file, options: [], range: range, withTemplate: "")
     }
-    return copy
+    return file as String
 }
 
 func deleteDeadStrings(_ deadStrings: Set<Substring>, inFileAt url: URL) throws {
