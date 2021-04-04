@@ -5,22 +5,29 @@ func deleteDeadStrings(_ deadStrings: Set<Substring>, in file: String) -> String
     for stringToDelete in deadStrings {
         let escaped = NSRegularExpression.escapedPattern(for: String(stringToDelete))
             .replacingOccurrences(of: "\n", with: #"\n"#)
+            .replacingOccurrences(of: #"\\n"#, with: #"\n"#)
             .replacingOccurrences(of: " ", with: #"\s"#)
         let pattern = ##"""
         # After a Semicolon
         (?<=;)\s*+
-        # Skip whitespace and comments until the string begins
-        (\s|\/\*[^(*/)]*\*\/)*+\"
+        # Skip...
+        (?:
+          \s |                 # whitespace
+          \/\*[^(*\/)]*+\*\/ | # block comments
+          \/\/.*$              # double-slash coments
+        )*                     # until the string begins
+        "
         """## + escaped + ##"""
+        "
         # If match, skip everything...
-        \"\s*+=[^;]*
+        \s*+=[^;]*
         # ...until the next localized String value ends
         \"\s*+;(?=\s*+)
         """##
 
         let regex = try! NSRegularExpression(
             pattern: pattern,
-            options: [.allowCommentsAndWhitespace, .dotMatchesLineSeparators]
+            options: [.allowCommentsAndWhitespace, .dotMatchesLineSeparators, .anchorsMatchLines]
         )
         let range = NSRange(location: 0, length: file.length)
         regex.replaceMatches(in: file, options: [], range: range, withTemplate: "")
