@@ -1,8 +1,8 @@
 import Foundation
 
 public func extractDeadStrings(at url: URL,
-							   sourcePath: String,
-							   localizationPath: String) throws -> DeadStringsData {
+							   sourcePath: String = "",
+							   localizationPath: String = "") throws -> DeadStringsData {
 	let strings = try extractStrings(fromFilesAt: url.appendingPathComponent(sourcePath))
 	let localizedKeys = extractLocalizedKeys(fromFilesAt: url.appendingPathComponent(localizationPath))
 

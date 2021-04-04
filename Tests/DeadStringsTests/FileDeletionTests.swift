@@ -26,6 +26,12 @@ final class FileDeletionTests: XCTestCase {
 
     /* String with whitespace key */
     "dead string" = "dead string with whitespace key";
+
+    /* Multiple */
+    /* Comments. */
+    "dead_multiple_comments_string" = "dead string with multiple comments";
+
+    "dead string that's "just" a \n\n sentence." = "dead string with multiple comments";
     """
 
     private let testStringsFileURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
@@ -55,7 +61,9 @@ final class FileDeletionTests: XCTestCase {
             "dead_string_3",
             "dead\nstring\nwith\nnewlines",
             "dead_multiline_comment_string",
-            "dead string"
+            "dead string",
+			"dead_multiple_comments_string",
+            "dead string that's \"just\" a \n\n sentence."
         ]
 
         let expected = """
@@ -81,7 +89,9 @@ final class FileDeletionTests: XCTestCase {
             "dead_string_3",
             "dead\nstring\nwith\nnewlines",
             "dead_multiline_comment_string",
-            "dead string"
+            "dead string",
+			"dead_multiple_comments_string",
+            "dead string that's \"just\" a \n\n sentence."
         ]
 
         let expected = """

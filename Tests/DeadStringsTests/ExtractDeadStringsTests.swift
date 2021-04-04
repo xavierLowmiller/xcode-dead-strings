@@ -8,7 +8,7 @@ final class ExtractDeadStringsTests: XCTestCase {
             .deletingLastPathComponent()
             .appendingPathComponent("MixedObjCProjectForLocalizedString")
 
-        let deadStringData = try extractDeadStrings(at: url)
+		let deadStringData = try extractDeadStrings(at: url, sourcePath: "", localizationPath: "")
 
         XCTAssertEqual(deadStringData.deadStrings, ["dead_string", "en_only", "de_only"])
         XCTAssertEqual(deadStringData.stringsByStringsFile.count, 4)
