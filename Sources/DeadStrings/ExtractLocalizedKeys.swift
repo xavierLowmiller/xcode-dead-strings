@@ -1,7 +1,13 @@
 import Foundation
 
 func extractLocalizedKeys(from string: String) -> Set<Substring> {
-    return Set(string.matches(for: #"(?<=\")[^\"]*+(?=\"\s*=)"#))
+    return Set(string.matches(for: ##"""
+                (?<=")
+                # Match anything that's after a quotation mark...
+                .*
+                # ...that's followed by a quotation mark, whitespace, and an equals sign
+                (?="\s*+=)
+                """##))
 }
 
 func extractLocalizedKeys(fromFileAt url: URL) -> Set<Substring> {

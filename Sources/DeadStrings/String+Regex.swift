@@ -3,7 +3,7 @@ import Foundation
 extension String {
     func matches(for pattern: String) -> [Substring] {
         let nsrange = NSRange(startIndex..<endIndex, in: self)
-        let regex = try! NSRegularExpression(pattern: pattern)
+        let regex = try! NSRegularExpression(pattern: pattern, options: [.allowCommentsAndWhitespace])
         var results: [Substring] = []
         regex.enumerateMatches(in: self, options: [], range: nsrange) { (match, _, _) in
             guard let match = match,
