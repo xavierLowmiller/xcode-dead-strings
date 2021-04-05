@@ -2,7 +2,7 @@ import XCTest
 @testable import DeadStrings
 
 final class FileDeletionTests: XCTestCase {
-    private let testFile = """
+    private let testFile = #"""
     /* Some valid strings */
     "push_first_vc" = "Push Swift View Controller";
     "my_view_controller" = "My View Controller";
@@ -34,10 +34,10 @@ final class FileDeletionTests: XCTestCase {
     /* Comments. */
     "dead_multiple_comments_string" = "dead string with multiple comments";
 
-    "dead string that's "just" a \n\n sentence." = "dead string with multiple comments";
+    "dead string that's \"just\" a \n\n sentence." = "dead string with multiple comments";
 
     "valid_string_2" = "Valid String";
-    """
+    """#
 
     private let testStringsFileURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         .appendingPathComponent("testFile.strings")
@@ -65,11 +65,11 @@ final class FileDeletionTests: XCTestCase {
             "dead_string_2",
             "dead_string_3",
             "dead_string_4",
-            "dead\nstring\nwith\nnewlines",
+            #"dead\nstring\nwith\nnewlines"#,
             "dead_multiline_comment_string",
             "dead string",
 			"dead_multiple_comments_string",
-            "dead string that's \"just\" a \\n\\n sentence."
+            #"dead string that's \"just\" a \n\n sentence."#
         ]
 
         let expected = """
@@ -96,11 +96,11 @@ final class FileDeletionTests: XCTestCase {
             "dead_string_2",
             "dead_string_3",
             "dead_string_4",
-            "dead\nstring\nwith\nnewlines",
+            #"dead\nstring\nwith\nnewlines"#,
             "dead_multiline_comment_string",
             "dead string",
 			"dead_multiple_comments_string",
-            "dead string that's \"just\" a \\n\\n sentence."
+            #"dead string that's \"just\" a \n\n sentence."#
         ]
 
         let expected = """

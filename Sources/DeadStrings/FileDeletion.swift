@@ -1,38 +1,48 @@
 import Foundation
 
 func deleteDeadStrings(_ deadStrings: Set<Substring>, in file: String) -> String {
-    let file = NSMutableString(string: file)
-    for stringToDelete in deadStrings {
-        let escaped = NSRegularExpression.escapedPattern(for: String(stringToDelete))
-            .replacingOccurrences(of: "\n", with: #"\n"#)
-            .replacingOccurrences(of: #"\\n"#, with: #"\n"#)
-            .replacingOccurrences(of: " ", with: #"\s"#)
-        let pattern = ##"""
-        # After a Semicolon
-        (?<=;)\s*+
-        # Skip...
-        (?:
-          \s |                 # whitespace
-          \/\*[^(*\/)]*+\*\/ | # block comments
-          \/\/.*$              # double-slash coments
-        )*                     # until the string begins
-        "
-        """## + escaped + ##"""
-        "
-        # If match, skip everything...
-        \s*+=[^;]*
-        # ...until the next localized String value ends
-        \"\s*+;(?=\s*+)
+    var file = file
+    let pattern = ##"""
+        (?<=;)\s*+                # After a Semicolon
+        (?>                       # Skip...
+          \s                      # whitespace
+          | \/\*[^(?>\*\/)]*+\*\/ # block comments
+          | \/\/.*                # double-slash coments
+        )*+                       # until the string begins
+        "(?<key>.*)"              # The key
+        \s*+=[^;]*                # If match, skip everything...
+        "\s*+;(?=\s*+)            # ...until the next localized String value ends
         """##
 
-        let regex = try! NSRegularExpression(
-            pattern: pattern,
-            options: [.allowCommentsAndWhitespace, .dotMatchesLineSeparators, .anchorsMatchLines]
-        )
-        let range = NSRange(location: 0, length: file.length)
-        regex.replaceMatches(in: file, options: [], range: range, withTemplate: "")
+    let regex = try! NSRegularExpression(
+        pattern: pattern,
+        options: [.allowCommentsAndWhitespace, .anchorsMatchLines]
+    )
+    let range = NSRange(file.startIndex..<file.endIndex, in: file)
+
+    var rangesToDelete: [Range<String.Index>] = []
+
+    regex.enumerateMatches(in: file, range: range) { match, flags, stop in
+        guard let match = match,
+              match.range.location != NSNotFound,
+              let rangeToDelete = Range(match.range, in: file)
+        else { return }
+
+        let keyNSRange = match.range(withName: "key")
+        guard keyNSRange.location != NSNotFound,
+              let keyRange = Range(keyNSRange, in: file)
+        else { return }
+
+        let key = file[keyRange]
+        if deadStrings.contains(key) {
+            rangesToDelete.append(rangeToDelete)
+        }
     }
-    return file as String
+
+    for range in rangesToDelete.reversed() {
+        file.removeSubrange(range)
+    }
+    return file
 }
 
 func deleteDeadStrings(_ deadStrings: Set<Substring>, inFileAt url: URL) throws {
