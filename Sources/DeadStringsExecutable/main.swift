@@ -24,9 +24,7 @@ struct DeadStrings: ParsableCommand {
         guard let url = URL(string: path)
         else { throw RuntimeError.invalidPath(path: path) }
 
-        var data = DeadStringsData(url: url, sourcePath: sourcePath, localizationPath: localizationPath)
-
-        try data.findDeadStrings()
+        let data = try DeadStringsData(url: url, sourcePath: sourcePath, localizationPath: localizationPath)
 
         if !silent {
             print(data.descriptionByFile)

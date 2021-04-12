@@ -1,23 +1,13 @@
 import Foundation
 
 public struct DeadStringsData {
-    var aliveStrings: Set<Substring> = []
-    var localizedStringsAndLocations: [(key: Substring, location: LocationInFile)] = []
-    var deadStrings: Set<Substring> = []
+    let aliveStrings: Set<Substring>
+    let localizedStringsAndLocations: [(key: Substring, location: LocationInFile)]
+    let deadStrings: Set<Substring>
 
-    private let url: URL
-    private let sourcePath: String
-    private let localizationPath: String
-
-    public init(url: URL, sourcePath: String? = nil, localizationPath: String? = nil) {
-        self.url = url
-        self.sourcePath = sourcePath ?? ""
-        self.localizationPath = localizationPath ?? ""
-    }
-
-    public mutating func findDeadStrings() throws {
-        aliveStrings = try extractStrings(fromFilesAt: url.appendingPathComponent(sourcePath))
-        localizedStringsAndLocations = extractLocalizedKeys(fromFilesAt: url.appendingPathComponent(localizationPath))
+    public init(url: URL, sourcePath: String? = nil, localizationPath: String? = nil) throws {
+        aliveStrings = try extractStrings(fromFilesAt: url.appendingPathComponent(sourcePath ?? ""))
+        localizedStringsAndLocations = extractLocalizedKeys(fromFilesAt: url.appendingPathComponent(localizationPath ?? ""))
         deadStrings = Set(localizedStringsAndLocations.map(\.key)).subtracting(aliveStrings)
     }
 
@@ -42,13 +32,18 @@ public struct DeadStringsData {
         return returnValue.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    public func deleteDeadStrings() throws {
-        let stringsToDelete = Dictionary(grouping:
+    var stringsToDelete: [URL: [LocationInFile]] {
+        Dictionary(grouping:
             localizedStringsAndLocations
             .filter { deadStrings.contains($0.key) }
             .map(\.location)) {
             $0.fileUrl
-        }.mapValues { $0.map(\.range).sorted(by: { $0.lowerBound > $1.lowerBound }) }
+        }
+    }
+
+    public func deleteDeadStrings() throws {
+        let stringsToDelete = self.stringsToDelete
+            .mapValues { $0.map(\.range).sorted(by: { $0.lowerBound > $1.lowerBound }) }
 
         for (url, rangesToDelete) in stringsToDelete {
             let data = FileManager.default.contents(atPath: url.path) ?? Data()

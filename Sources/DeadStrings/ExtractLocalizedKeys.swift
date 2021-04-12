@@ -1,8 +1,9 @@
 import Foundation
 
 public struct LocationInFile: Equatable {
-    var fileUrl: URL
-    var range: Range<String.Index>
+    let fileUrl: URL
+    let range: Range<String.Index>
+    let lineNumber: Int
 }
 
 func extractLocalizedKeys(from contents: String, url: URL) -> [(key: Substring, location: LocationInFile)] {
@@ -38,8 +39,9 @@ func extractLocalizedKeys(from contents: String, url: URL) -> [(key: Substring, 
         else { return }
 
         let key = contents[keyRange]
+        let lineNumber = contents.lineNumber(of: keyRange)
 
-        let location = LocationInFile(fileUrl: url, range: rangeToDelete)
+        let location = LocationInFile(fileUrl: url, range: rangeToDelete, lineNumber: lineNumber)
         keysAndLocations.append((key, location))
     }
 
@@ -68,5 +70,9 @@ public func extractLocalizedKeys(fromFilesAt url: URL) -> [(key: Substring, loca
 private extension String {
     var hasSupportedSuffix: Bool {
         return hasSuffix(".strings")
+    }
+
+    func lineNumber(of range: Range<Index>) -> Int {
+        self[..<range.lowerBound].filter { $0 == "\n" }.count + 1
     }
 }
