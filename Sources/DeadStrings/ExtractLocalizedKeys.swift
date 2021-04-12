@@ -1,41 +1,72 @@
 import Foundation
 
-func extractLocalizedKeys(from string: String) -> Set<Substring> {
-    return Set(string.matches(for: ##"""
-                (?<=")
-                # Match anything that's after a quotation mark...
-                .*
-                # ...that's followed by a quotation mark, whitespace, and an equals sign
-                (?="\s*+=)
-                """##))
+public struct LocationInFile: Equatable {
+    var fileUrl: URL
+    var range: Range<String.Index>
 }
 
-func extractLocalizedKeys(fromFileAt url: URL) -> Set<Substring> {
+func extractLocalizedKeys(from contents: String, url: URL) -> [(key: Substring, location: LocationInFile)] {
+    let pattern = ##"""
+        (?<=;|^)\s*+              # After a Semicolon
+        (?>                       # Skip...
+          \s                      # whitespace
+          | \/\*[^(?>\*\/)]*+\*\/ # block comments
+          | \/\/.*                # double-slash coments
+        )*+                       # until the string begins
+        "(?<key>.*)"              # The key
+        \s*+=.*                   # If match, skip everything...
+        "\s*+;(?=\s*+)            # ...until the next localized String value ends
+        """##
+
+    let regex = try! NSRegularExpression(
+        pattern: pattern,
+        options: [.allowCommentsAndWhitespace, .anchorsMatchLines]
+    )
+    let range = NSRange(contents.startIndex..<contents.endIndex, in: contents)
+
+    var keysAndLocations: [(Substring, LocationInFile)] = []
+
+    regex.enumerateMatches(in: contents, range: range) { match, flags, stop in
+        guard let match = match,
+              match.range.location != NSNotFound,
+              let rangeToDelete = Range(match.range, in: contents)
+        else { return }
+
+        let keyNSRange = match.range(withName: "key")
+        guard keyNSRange.location != NSNotFound,
+              let keyRange = Range(keyNSRange, in: contents)
+        else { return }
+
+        let key = contents[keyRange]
+
+        let location = LocationInFile(fileUrl: url, range: rangeToDelete)
+        keysAndLocations.append((key, location))
+    }
+
+    return keysAndLocations
+}
+
+func extractLocalizedKeys(fromFileAt url: URL) -> [(key: Substring, location: LocationInFile)] {
     guard let data = FileManager.default.contents(atPath: url.path) else { return [] }
     let contents = String(decoding: data, as: UTF8.self)
-    return extractLocalizedKeys(from: contents)
+    return extractLocalizedKeys(from: contents, url: url)
 }
 
-func extractLocalizedKeys(fromFilesAt url: URL) -> [URL: Set<Substring>] {
+public func extractLocalizedKeys(fromFilesAt url: URL) -> [(key: Substring, location: LocationInFile)] {
     let enumerator = FileManager.default.enumerator(atPath: url.path)
 
-    var strings: [URL: Set<Substring>] = [:]
+    var keysAndLocations: [(Substring, LocationInFile)] = []
     while let filename = enumerator?.nextObject() as? String {
         guard filename.hasSupportedSuffix else { continue }
         let fileUrl = url.appendingPathComponent(filename)
-        strings[fileUrl] = extractLocalizedKeys(fromFileAt: fileUrl)
+        keysAndLocations += extractLocalizedKeys(fromFileAt: fileUrl)
     }
 
-    return strings
+    return keysAndLocations
 }
 
 private extension String {
     var hasSupportedSuffix: Bool {
-        for suffix in [".strings"] {
-            if hasSuffix(suffix) {
-                return true
-            }
-        }
-        return false
+        return hasSuffix(".strings")
     }
 }

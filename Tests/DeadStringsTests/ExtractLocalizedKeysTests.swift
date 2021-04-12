@@ -3,6 +3,7 @@ import XCTest
 
 final class ExtractLocalizedKeysTests: XCTestCase {
     func testStringExtractionFromSwiftFile() {
+        // Given
         let localizedStringsFile = ##"""
         /* Swift View Controller */
         "my_swift_view_controller" = "My Swift View Controller";
@@ -13,9 +14,12 @@ final class ExtractLocalizedKeysTests: XCTestCase {
         "ümlauts-dash;:.\n()" = "ümlauts-dash;:\n()";
         "can we do \"quotation marks\"?" = "a string";
         """##
+        let url = URL(string: "/some/valid/path")!
 
-        let parsedStrings = extractLocalizedKeys(from: localizedStringsFile)
+        // When
+        let parsedStrings = extractLocalizedKeys(from: localizedStringsFile, url: url).map(\.key)
 
+        // Then
         XCTAssert(parsedStrings.contains("my_swift_view_controller"))
         XCTAssert(parsedStrings.contains("push_second_vc"))
         XCTAssert(parsedStrings.contains("Some sentence (that includes) punctuation.?!"))
@@ -61,9 +65,7 @@ final class ExtractLocalizedKeysTests: XCTestCase {
             .appendingPathComponent("MixedObjCProjectForLocalizedString")
 
         let stringsByFile = extractLocalizedKeys(fromFilesAt: url)
-        let strings: Set<Substring> = stringsByFile.reduce(into: []) {
-            $0.formUnion($1.value)
-        }
+        let strings = Set(stringsByFile.map(\.key))
 
         // ObjC View Controller
         XCTAssert(strings.contains("push_first_vc"))

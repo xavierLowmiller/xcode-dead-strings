@@ -24,7 +24,7 @@ func extractStrings(fromFileAt url: URL) throws -> Set<Substring> {
     }
 }
 
-func extractStrings(fromFilesAt url: URL) throws -> Set<Substring> {
+public func extractStrings(fromFilesAt url: URL) throws -> Set<Substring> {
     let enumerator = FileManager.default.enumerator(atPath: url.path)
 
     var strings: Set<Substring> = []

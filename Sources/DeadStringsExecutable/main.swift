@@ -24,16 +24,16 @@ struct DeadStrings: ParsableCommand {
         guard let url = URL(string: path)
         else { throw RuntimeError.invalidPath(path: path) }
 
-        let deadStringData = try extractDeadStrings(at: url,
-													sourcePath: sourcePath ?? "",
-													localizationPath: localizationPath ?? "")
+        var data = DeadStringsData(url: url, sourcePath: sourcePath, localizationPath: localizationPath)
+
+        try data.findDeadStrings()
 
         if !silent {
-            print(deadStringData.descriptionByFile)
+            print(data.descriptionByFile)
         }
 
         if write {
-			try deleteDeadStrings(deadStringData.deadStrings, inFilesAt: url.appendingPathComponent(localizationPath ?? ""))
+            try data.deleteDeadStrings()
         }
     }
 }
