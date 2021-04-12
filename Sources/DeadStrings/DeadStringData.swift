@@ -2,22 +2,22 @@ import Foundation
 
 public struct DeadStringsData {
     let aliveStrings: Set<Substring>
-    let localizedStringsAndLocations: [(key: Substring, location: LocationInFile)]
+    let localizedStringResults: [LocationStringResult]
     let deadStrings: Set<Substring>
 
     public init(url: URL, sourcePath: String? = nil, localizationPath: String? = nil) throws {
         aliveStrings = try extractStrings(fromFilesAt: url.appendingPathComponent(sourcePath ?? ""))
-        localizedStringsAndLocations = extractLocalizedKeys(fromFilesAt: url.appendingPathComponent(localizationPath ?? ""))
-        deadStrings = Set(localizedStringsAndLocations.map(\.key)).subtracting(aliveStrings)
+        localizedStringResults = extractLocalizedKeys(fromFilesAt: url.appendingPathComponent(localizationPath ?? ""))
+        deadStrings = Set(localizedStringResults.map(\.key)).subtracting(aliveStrings)
     }
 
     public var descriptionByFile: String {
         guard !deadStrings.isEmpty else { return "No dead strings found!" }
 
         let stringsByStringsFile = Dictionary(
-            grouping: localizedStringsAndLocations
+            grouping: localizedStringResults
                 .filter { deadStrings.contains($0.key) })
-            { $0.location.fileUrl }
+            { $0.fileUrl }
             .mapValues { $0.map(\.key) }
 
         var returnValue = "Found dead strings:\n\n"
@@ -32,13 +32,24 @@ public struct DeadStringsData {
         return returnValue.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    var stringsToDelete: [URL: [LocationInFile]] {
+    var stringsToDelete: [URL: [LocationStringResult]] {
         Dictionary(grouping:
-            localizedStringsAndLocations
-            .filter { deadStrings.contains($0.key) }
-            .map(\.location)) {
+            localizedStringResults
+            .filter { deadStrings.contains($0.key) }) {
             $0.fileUrl
         }
+    }
+
+    public var xcodeWarnings: Set<String> {
+        var warnings: [String] = []
+        for (url, locations) in stringsToDelete {
+            for location in locations {
+                let warningText = "'\(location.key)' looks unused"
+                warnings.append("\(url.path):\(location.lineNumber): warning: \(warningText)")
+            }
+        }
+
+        return Set(warnings)
     }
 
     public func deleteDeadStrings() throws {

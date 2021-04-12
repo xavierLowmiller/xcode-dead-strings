@@ -14,6 +14,9 @@ struct DeadStrings: ParsableCommand {
     @Flag(help: "Delete dead strings from .strings files automatically")
     var delete: Bool = false
 
+    @Flag(help: "Show dead strings as warnings in Xcode")
+    var xcodeWarnings: Bool = false
+
     @Option(help: "Path containing the source files to be searched")
     var sourcePath: String?
 
@@ -26,12 +29,18 @@ struct DeadStrings: ParsableCommand {
 
         let data = try DeadStringsData(url: url, sourcePath: sourcePath, localizationPath: localizationPath)
 
-        if !silent {
+        if !silent, !xcodeWarnings {
             print(data.descriptionByFile)
         }
 
         if delete {
             try data.deleteDeadStrings()
+        }
+
+        if xcodeWarnings {
+            for warning in data.xcodeWarnings {
+                print(warning)
+            }
         }
     }
 }

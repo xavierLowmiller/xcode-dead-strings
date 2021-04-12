@@ -15,9 +15,9 @@ final class DeadStringsDataTests: XCTestCase {
         // Then
         XCTAssertEqual(deadStringData.deadStrings, ["dead_string", "en_only", "de_only"])
         XCTAssertEqual(deadStringData.aliveStrings.count, 54)
-        XCTAssertEqual(deadStringData.localizedStringsAndLocations.count, 20)
+        XCTAssertEqual(deadStringData.localizedStringResults.count, 20)
         XCTAssertEqual(deadStringData.stringsToDelete.count, 2)
-        let locations: [LocationInFile] = deadStringData.stringsToDelete.reduce(into: []) {
+        let locations: [LocationStringResult] = deadStringData.stringsToDelete.reduce(into: []) {
             $0 += $1.value
         }
 

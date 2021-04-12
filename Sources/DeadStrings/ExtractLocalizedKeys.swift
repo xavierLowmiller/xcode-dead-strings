@@ -1,12 +1,13 @@
 import Foundation
 
-public struct LocationInFile: Equatable {
+public struct LocationStringResult: Equatable {
     let fileUrl: URL
     let range: Range<String.Index>
     let lineNumber: Int
+    let key: Substring
 }
 
-func extractLocalizedKeys(from contents: String, url: URL) -> [(key: Substring, location: LocationInFile)] {
+func extractLocalizedKeys(from contents: String, url: URL) -> [LocationStringResult] {
     let pattern = ##"""
         (?<=;|^)\s*+              # After a Semicolon
         (?>                       # Skip...
@@ -25,7 +26,7 @@ func extractLocalizedKeys(from contents: String, url: URL) -> [(key: Substring, 
     )
     let range = NSRange(contents.startIndex..<contents.endIndex, in: contents)
 
-    var keysAndLocations: [(Substring, LocationInFile)] = []
+    var keysAndLocations: [LocationStringResult] = []
 
     var lastPosition = contents.startIndex
     var currentLine = 1
@@ -46,23 +47,28 @@ func extractLocalizedKeys(from contents: String, url: URL) -> [(key: Substring, 
                                              lastPosition: &lastPosition,
                                              currentLine: &currentLine)
 
-        let location = LocationInFile(fileUrl: url, range: rangeToDelete, lineNumber: lineNumber)
-        keysAndLocations.append((key, location))
+        let location = LocationStringResult(
+            fileUrl: url,
+            range: rangeToDelete,
+            lineNumber: lineNumber,
+            key: key
+        )
+        keysAndLocations.append(location)
     }
 
     return keysAndLocations
 }
 
-func extractLocalizedKeys(fromFileAt url: URL) -> [(key: Substring, location: LocationInFile)] {
+func extractLocalizedKeys(fromFileAt url: URL) -> [LocationStringResult] {
     guard let data = FileManager.default.contents(atPath: url.path) else { return [] }
     let contents = String(decoding: data, as: UTF8.self)
     return extractLocalizedKeys(from: contents, url: url)
 }
 
-public func extractLocalizedKeys(fromFilesAt url: URL) -> [(key: Substring, location: LocationInFile)] {
+public func extractLocalizedKeys(fromFilesAt url: URL) -> [LocationStringResult] {
     let enumerator = FileManager.default.enumerator(atPath: url.path)
 
-    var keysAndLocations: [(Substring, LocationInFile)] = []
+    var keysAndLocations: [LocationStringResult] = []
     while let filename = enumerator?.nextObject() as? String {
         guard filename.hasSupportedSuffix else { continue }
         let fileUrl = url.appendingPathComponent(filename)
