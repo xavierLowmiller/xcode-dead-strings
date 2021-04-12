@@ -12,7 +12,7 @@ struct DeadStrings: ParsableCommand {
     var silent: Bool = false
 
     @Flag(help: "Delete dead strings from .strings files automatically")
-    var write: Bool = false
+    var delete: Bool = false
 
 	@Option(help: "Path containing the source files to be searched")
 	var sourcePath: String?
@@ -30,7 +30,7 @@ struct DeadStrings: ParsableCommand {
             print(data.descriptionByFile)
         }
 
-        if write {
+        if delete {
             try data.deleteDeadStrings()
         }
     }
