@@ -27,6 +27,9 @@ func extractLocalizedKeys(from contents: String, url: URL) -> [(key: Substring, 
 
     var keysAndLocations: [(Substring, LocationInFile)] = []
 
+    var lastPosition = contents.startIndex
+    var currentLine = 1
+
     regex.enumerateMatches(in: contents, range: range) { match, flags, stop in
         guard let match = match,
               match.range.location != NSNotFound,
@@ -39,7 +42,9 @@ func extractLocalizedKeys(from contents: String, url: URL) -> [(key: Substring, 
         else { return }
 
         let key = contents[keyRange]
-        let lineNumber = contents.lineNumber(of: keyRange)
+        let lineNumber = contents.lineNumber(of: keyRange,
+                                             lastPosition: &lastPosition,
+                                             currentLine: &currentLine)
 
         let location = LocationInFile(fileUrl: url, range: rangeToDelete, lineNumber: lineNumber)
         keysAndLocations.append((key, location))
@@ -72,7 +77,10 @@ private extension String {
         return hasSuffix(".strings")
     }
 
-    func lineNumber(of range: Range<Index>) -> Int {
-        self[..<range.lowerBound].filter { $0 == "\n" }.count + 1
+    func lineNumber(of range: Range<Index>, lastPosition: inout Index, currentLine: inout Int) -> Int {
+        let line = self[lastPosition..<range.lowerBound].filter { $0 == "\n" }.count + currentLine
+        lastPosition = range.upperBound
+        currentLine = line
+        return line
     }
 }
