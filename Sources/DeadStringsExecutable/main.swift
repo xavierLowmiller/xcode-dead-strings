@@ -14,11 +14,11 @@ struct DeadStrings: ParsableCommand {
     @Flag(help: "Delete dead strings from .strings files automatically")
     var delete: Bool = false
 
-	@Option(help: "Path containing the source files to be searched")
-	var sourcePath: String?
+    @Option(help: "Path containing the source files to be searched")
+    var sourcePath: String?
 
-	@Option(help: "Path containing the localization files to be searched")
-	var localizationPath: String?
+    @Option(help: "Path containing the localization files to be searched")
+    var localizationPath: String?
 
     mutating func run() throws {
         guard let url = URL(string: path)
