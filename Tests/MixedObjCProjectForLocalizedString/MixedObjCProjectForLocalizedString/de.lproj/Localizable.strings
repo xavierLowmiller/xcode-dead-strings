@@ -15,3 +15,9 @@
 
 /* de only */
 "de_only" = "Nur Deutsch";
+
+/* no_dead_string */
+"alive_string_1" = "Das wird noch gebraucht";
+
+// no_dead_string
+"alive_string_2" = "Das wird noch gebraucht";

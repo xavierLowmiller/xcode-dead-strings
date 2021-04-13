@@ -15,7 +15,7 @@ final class DeadStringsDataTests: XCTestCase {
         // Then
         XCTAssertEqual(deadStringData.deadStrings, ["dead_string", "en_only", "de_only"])
         XCTAssertEqual(deadStringData.aliveStrings.count, 54)
-        XCTAssertEqual(deadStringData.localizedStringResults.count, 20)
+        XCTAssertEqual(deadStringData.localizedStringResults.count, 24)
         XCTAssertEqual(deadStringData.stringsToDelete.count, 2)
         let locations: [LocationStringResult] = deadStringData.stringsToDelete.reduce(into: []) {
             $0 += $1.value
@@ -37,10 +37,10 @@ final class DeadStringsDataTests: XCTestCase {
         """)
 
         XCTAssertEqual(deadStringData.xcodeWarnings.sorted(), [
-            #"/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:14: warning: 'dead_string' looks unused"#,
-            #"/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:17: warning: 'de_only' looks unused"#,
-            #"/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:14: warning: 'dead_string' looks unused"#,
-            #"/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:17: warning: 'en_only' looks unused"#
+            "/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:14: warning: 'dead_string' looks unused\nDelete it or add the comment \'no_dead_string\'",
+            "/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:17: warning: 'de_only' looks unused\nDelete it or add the comment \'no_dead_string\'",
+            "/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:14: warning: 'dead_string' looks unused\nDelete it or add the comment \'no_dead_string\'",
+            "/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:17: warning: 'en_only' looks unused\nDelete it or add the comment \'no_dead_string\'"
         ])
     }
 }

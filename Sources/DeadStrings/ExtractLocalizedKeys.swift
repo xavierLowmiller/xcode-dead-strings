@@ -5,16 +5,19 @@ public struct LocationStringResult: Equatable {
     let range: Range<String.Index>
     let lineNumber: Int
     let key: Substring
+    let isIgnored: Bool
 }
 
 func extractLocalizedKeys(from contents: String, url: URL) -> [LocationStringResult] {
     let pattern = ##"""
         (?<=;|^)\s*+              # After a Semicolon
-        (?>                       # Skip...
-          \s                        # ...whitespace
-          | \/\*[^(?>\*\/)]*+\*\/   # ...block comments
-          | \/\/.*                  # ...double-slash coments
-        )*+                       # until the string begins
+        (?<comment>
+          (?>                       # Skip...
+            \s                        # ...whitespace
+            | \/\*[^(?>\*\/)]*+\*\/   # ...block comments
+            | \/\/.*                  # ...double-slash coments
+          )*+                       # until the string begins
+        )
         "(?<key>.*)"              # The key
         \s*+=.*                   # If match, skip everything...
         "\s*+;(?=\s*+)            # ...until the next localized String value ends
@@ -37,12 +40,25 @@ func extractLocalizedKeys(from contents: String, url: URL) -> [LocationStringRes
               let rangeToDelete = Range(match.range, in: contents)
         else { return }
 
+        // Key
         let keyNSRange = match.range(withName: "key")
         guard keyNSRange.location != NSNotFound,
               let keyRange = Range(keyNSRange, in: contents)
         else { return }
 
         let key = contents[keyRange]
+
+        // Comment
+        let isIgnored: Bool
+        let commentNSRange = match.range(withName: "comment")
+        if commentNSRange.location != NSNotFound,
+           let commentRange = Range(commentNSRange, in: contents),
+           contents[commentRange].contains("no_dead_string") {
+            isIgnored = true
+        } else {
+            isIgnored = false
+        }
+
         let lineNumber = contents.lineNumber(of: keyRange,
                                              lastPosition: &lastPosition,
                                              currentLine: &currentLine)
@@ -51,7 +67,8 @@ func extractLocalizedKeys(from contents: String, url: URL) -> [LocationStringRes
             fileUrl: url,
             range: rangeToDelete,
             lineNumber: lineNumber,
-            key: key
+            key: key,
+            isIgnored: isIgnored
         )
         keysAndLocations.append(location)
     }

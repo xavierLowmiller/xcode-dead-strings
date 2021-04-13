@@ -8,7 +8,9 @@ public struct DeadStringsData {
     public init(url: URL, sourcePath: String? = nil, localizationPath: String? = nil) throws {
         aliveStrings = try extractStrings(fromFilesAt: url.appendingOptionalPathComponent(sourcePath))
         localizedStringResults = extractLocalizedKeys(fromFilesAt: url.appendingOptionalPathComponent(localizationPath))
-        deadStrings = Set(localizedStringResults.map(\.key)).subtracting(aliveStrings)
+        deadStrings = Set(localizedStringResults
+                            .filter { !$0.isIgnored }
+                            .map(\.key)).subtracting(aliveStrings)
     }
 
     public var descriptionByFile: String {
@@ -44,7 +46,7 @@ public struct DeadStringsData {
         var warnings: [String] = []
         for (url, locations) in stringsToDelete {
             for location in locations {
-                let warningText = "'\(location.key)' looks unused"
+                let warningText = "'\(location.key)' looks unused\nDelete it or add the comment 'no_dead_string'"
                 warnings.append("\(url.path):\(location.lineNumber): warning: \(warningText)")
             }
         }
