@@ -11,9 +11,9 @@ func extractLocalizedKeys(from contents: String, url: URL) -> [LocationStringRes
     let pattern = ##"""
         (?<=;|^)\s*+              # After a Semicolon
         (?>                       # Skip...
-          \s                      # whitespace
-          | \/\*[^(?>\*\/)]*+\*\/ # block comments
-          | \/\/.*                # double-slash coments
+          \s                        # ...whitespace
+          | \/\*[^(?>\*\/)]*+\*\/   # ...block comments
+          | \/\/.*                  # ...double-slash coments
         )*+                       # until the string begins
         "(?<key>.*)"              # The key
         \s*+=.*                   # If match, skip everything...

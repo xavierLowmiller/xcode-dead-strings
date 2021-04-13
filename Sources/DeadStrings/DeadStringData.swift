@@ -6,8 +6,8 @@ public struct DeadStringsData {
     let deadStrings: Set<Substring>
 
     public init(url: URL, sourcePath: String? = nil, localizationPath: String? = nil) throws {
-        aliveStrings = try extractStrings(fromFilesAt: url.appendingPathComponent(sourcePath ?? ""))
-        localizedStringResults = extractLocalizedKeys(fromFilesAt: url.appendingPathComponent(localizationPath ?? ""))
+        aliveStrings = try extractStrings(fromFilesAt: url.appendingOptionalPathComponent(sourcePath))
+        localizedStringResults = extractLocalizedKeys(fromFilesAt: url.appendingOptionalPathComponent(localizationPath))
         deadStrings = Set(localizedStringResults.map(\.key)).subtracting(aliveStrings)
     }
 
