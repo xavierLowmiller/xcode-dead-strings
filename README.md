@@ -1,8 +1,31 @@
 # Xcode Dead Strings
 
+## Supports
+
+- [x] Swift
+  - [x] `"Regular Strings"`
+  - [ ] `"""Multiline Strings"""`
+  - [ ] `#"Raw Strings"#`
+- [x] Objective-C(++)
+- [x] Info.plist keys
+
 ## Options
 
-### `--xcode-warnings`
+* `--source-path <source-path>`
+
+The path to your source files (relative to your project directory).
+Setting this can greatly improve execution speed.
+
+* `--localization-path <localization-path>`
+
+The path to your localizable `.strings` files (relative to your project directory).
+Setting this can greatly improve execution speed.
+
+* `--delete`
+
+Automatically delete all dead strings from your `.strings` files
+
+* `--xcode-warnings`
 
 For use as an Xcode build phase:
 
@@ -12,7 +35,9 @@ This will emit Xcode warnings:
 
 <img width="256" alt="Screenshot 2021-04-14 at 20 35 23" src="https://user-images.githubusercontent.com/16212751/114761582-fa7f4c80-9d60-11eb-93a5-066d8067ce68.png">
 
+* `--silent`
 
+Don't show any output
 
 ## Limitations
 
