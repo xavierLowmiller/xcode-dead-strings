@@ -47,7 +47,7 @@ This will emit Xcode warnings:
 
 Don't show any output
 
-## Limitations
+## Limitations ⚠️
 
 This command line tool can only detect static strings. If you compute your localized String keys dynamically, they won't be detected by `xcode-dead-string`, so this won't work:
 
