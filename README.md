@@ -1,5 +1,17 @@
 # Xcode Dead Strings
 
+## Options
+
+### `--xcode-warnings`
+
+For use as an Xcode build phase:
+
+<img width="540" alt="Screenshot 2021-04-14 at 20 36 08" src="https://user-images.githubusercontent.com/16212751/114761642-1125a380-9d61-11eb-8105-a3ade9bf428d.png">
+
+This will emit Xcode warnings:
+
+<img width="256" alt="Screenshot 2021-04-14 at 20 35 23" src="https://user-images.githubusercontent.com/16212751/114761582-fa7f4c80-9d60-11eb-93a5-066d8067ce68.png">
+
 
 
 ## Limitations
@@ -32,6 +44,6 @@ Or you can ignore the keys from `xcode-dead-strings` by adding a comment in your
 /* no_dead_string */
 "my_string_key_1" = "...";
 
-/* no_dead_string */
+// no_dead_string
 "my_string_key_1" = "...";
 ```
