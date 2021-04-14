@@ -2,6 +2,12 @@
 
 Find dead localized strings in your Xcode project.
 
+## Installing
+
+### From Source
+
+Clone this project and run `swift build -c release`
+
 ## Supports
 
 - [x] Swift
