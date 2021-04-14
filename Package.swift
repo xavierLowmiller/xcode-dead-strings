@@ -6,7 +6,7 @@ let package = Package(
     name: "DeadStrings",
     platforms: [.macOS(.v10_13)],
     products: [
-        .executable(name: "dead-strings", targets: ["DeadStringsExecutable"]),
+        .executable(name: "xcode-dead-strings", targets: ["DeadStringsExecutable"]),
         .library(name: "DeadStrings", targets: ["DeadStrings"])
     ],
     dependencies: [
