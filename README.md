@@ -4,6 +4,14 @@ Find dead localized strings in your Xcode project.
 
 ## Installing
 
+## Brew
+
+TODO
+
+```sh
+brew install xcode-dead-strings
+```
+
 ### From Source
 
 Clone this project and run `swift build -c release`
@@ -35,14 +43,6 @@ Immediately delete all dead Strings
 
 ```sh
 xcode-dead-strings --delete
-```
-
-## Installation
-
-TODO
-
-```sh
-brew install xcode-dead-strings
 ```
 
 ## Options
