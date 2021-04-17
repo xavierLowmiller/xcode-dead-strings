@@ -1,7 +1,7 @@
 import Foundation
 
 func extractStrings(from string: String) -> Set<Substring> {
-    return Set(string.matches(for: #"(?<=\")[^\"]+(?=\")"#))
+    return Set(string.matches(for: #"(?<=\")[^\"\n]+(?=\")"#))
 }
 
 func extractStrings(from plistUrl: URL) throws -> Set<Substring> {
