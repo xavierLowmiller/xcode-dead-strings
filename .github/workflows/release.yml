@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+     tags:
+     - '*.*.*'
+
+jobs:
+  release:
+    runs-on: macOS-latest
+    
+    steps:
+
+    - uses: actions/checkout@master
+
+    - run: swift build -c release
+
+    - run: mv .build/release/xcode-dead-strings xcode-dead-strings
+
+    - run: zip xcode-dead-strings.zip xcode-dead-strings
+
+    - name: Release
+      uses: softprops/action-gh-release@master
+      with:
+        files: xml-xcode-dead-strings.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
