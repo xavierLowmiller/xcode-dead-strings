@@ -27,20 +27,20 @@ final class DeadStringsDataTests: XCTestCase {
         XCTAssertEqual(deadStringData.descriptionByFile, """
         Found dead strings:
 
-        /Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:
+        \(url.path)/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:
         de_only
         dead_string
 
-        /Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:
+        \(url.path)/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:
         dead_string
         en_only
         """)
 
         XCTAssertEqual(deadStringData.xcodeWarnings.sorted(), [
-            "/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:14: warning: 'dead_string' looks unused\nDelete it or add the comment \'no_dead_string\'",
-            "/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:17: warning: 'de_only' looks unused\nDelete it or add the comment \'no_dead_string\'",
-            "/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:14: warning: 'dead_string' looks unused\nDelete it or add the comment \'no_dead_string\'",
-            "/Users/xaverlohmueller/Developer/DeadStrings/Tests/MixedObjCProjectForLocalizedString/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:17: warning: 'en_only' looks unused\nDelete it or add the comment \'no_dead_string\'"
+            "\(url.path)/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:14: warning: 'dead_string' looks unused\nDelete it or add the comment \'no_dead_string\'",
+            "\(url.path)/MixedObjCProjectForLocalizedString/de.lproj/Localizable.strings:17: warning: 'de_only' looks unused\nDelete it or add the comment \'no_dead_string\'",
+            "\(url.path)/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:14: warning: 'dead_string' looks unused\nDelete it or add the comment \'no_dead_string\'",
+            "\(url.path)/MixedObjCProjectForLocalizedString/en.lproj/Localizable.strings:17: warning: 'en_only' looks unused\nDelete it or add the comment \'no_dead_string\'"
         ])
     }
 }
