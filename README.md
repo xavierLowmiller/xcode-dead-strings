@@ -17,6 +17,34 @@ Clone this project and run `swift build -c release`
 - [x] Objective-C(++)
 - [x] Info.plist keys
 
+## Examples
+
+List all dead Strings by file
+
+```sh
+xcode-dead-strings --source-path Sources --localization-path Sources/Localizable\ Files
+```
+
+Create Xcode warnings for dead Strings
+
+```sh
+xcode-dead-strings --xcode
+```
+
+Immediately delete all dead Strings
+
+```sh
+xcode-dead-strings --delete
+```
+
+## Installation
+
+TODO
+
+```sh
+brew install xcode-dead-strings
+```
+
 ## Options
 
 * `--source-path <source-path>`
