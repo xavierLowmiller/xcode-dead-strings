@@ -4,7 +4,7 @@ Find dead localized strings in your Xcode project.
 
 ## Installing
 
-## Brew
+### Brew
 
 ```sh
 brew install xavierLowmiller/tap/xcode-dead-strings
