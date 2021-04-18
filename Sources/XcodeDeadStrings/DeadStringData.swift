@@ -8,9 +8,10 @@ public struct DeadStringsData {
     public init(url: URL, sourcePath: String? = nil, localizationPath: String? = nil) throws {
         aliveStrings = try extractStrings(fromFilesAt: url.appendingOptionalPathComponent(sourcePath))
         localizedStringResults = extractLocalizedKeys(fromFilesAt: url.appendingOptionalPathComponent(localizationPath))
-        deadStrings = Set(localizedStringResults
-                            .filter { !$0.isIgnored }
-                            .map(\.key)).subtracting(aliveStrings)
+        let ignoredKeys = localizedStringResults.filter { $0.isIgnored }.map(\.key)
+        deadStrings = Set(localizedStringResults.map(\.key))
+            .subtracting(aliveStrings)
+            .subtracting(ignoredKeys)
     }
 
     public var descriptionByFile: String {

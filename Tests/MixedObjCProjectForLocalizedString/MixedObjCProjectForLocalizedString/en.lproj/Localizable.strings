@@ -21,3 +21,6 @@
 
 // no_dead_string
 "alive_string_2" = "This is still needed";
+
+// no_dead_string
+"alive_string_3" = "Only ignored here";
