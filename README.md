@@ -6,10 +6,8 @@ Find dead localized strings in your Xcode project.
 
 ## Brew
 
-TODO
-
 ```sh
-brew install xcode-dead-strings
+brew install xavierLowmiller/tap/xcode-dead-strings
 ```
 
 ### From Source
@@ -25,6 +23,7 @@ Clone this project and run `swift build -c release`
 - [x] Objective-C(++)
 - [x] Info.plist keys
 - [ ] Storyboards / xibs
+- [ ] .intentDefinition files
 
 ## Examples
 
