@@ -1,8 +1,8 @@
 import ArgumentParser
 import Foundation
-import DeadStrings
+import XcodeDeadStrings
 
-struct DeadStrings: ParsableCommand {
+struct XcodeDeadStrings: ParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Finds unused entries in .strings files")
 
     @Argument(help: "The root path of the iOS directory")
@@ -57,4 +57,4 @@ struct RuntimeError: Error, CustomStringConvertible {
     }
 }
 
-DeadStrings.main()
+XcodeDeadStrings.main()

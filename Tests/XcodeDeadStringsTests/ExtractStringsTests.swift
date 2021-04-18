@@ -1,5 +1,5 @@
 import XCTest
-@testable import DeadStrings
+@testable import XcodeDeadStrings
 
 final class ExtractStringsTests: XCTestCase {
     func testStringExtractionFromSwiftFile() {

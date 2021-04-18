@@ -1,5 +1,5 @@
 import XCTest
-@testable import DeadStrings
+@testable import XcodeDeadStrings
 import class Foundation.Bundle
 
 final class DeadStringsTests: XCTestCase {
