@@ -36,7 +36,7 @@ xcode-dead-strings
 ### Create Xcode warnings for dead Strings
 
 ```sh
-xcode-dead-strings --xcode
+xcode-dead-strings --xcode-warnings
 ```
 
 ### Immediately delete all identified dead Strings
