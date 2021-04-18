@@ -100,6 +100,7 @@
 				1A71E9D92605EF4400672BE0 /* Sources */,
 				1A71E9DA2605EF4400672BE0 /* Frameworks */,
 				1A71E9DB2605EF4400672BE0 /* Resources */,
+				1AF83332262C855800516BCF /* Dead Strings */,
 			);
 			buildRules = (
 			);
@@ -156,6 +157,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1AF83332262C855800516BCF /* Dead Strings */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Dead Strings";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which xcode-dead-strings >/dev/null; then\n  xcode-dead-strings --xcode-warnings\nelse\n  echo \"warning: xcode-dead-strings not installed, run 'brew install xavierlowmiller/tap/xcode-dead-strings' to install\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1A71E9D92605EF4400672BE0 /* Sources */ = {
