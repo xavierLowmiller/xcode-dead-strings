@@ -24,6 +24,7 @@ Clone this project and run `swift build -c release`
   - [ ] `#"Raw Strings"#`
 - [x] Objective-C(++)
 - [x] Info.plist keys
+- [ ] Storyboards / xibs
 
 ## Examples
 
