@@ -1,6 +1,6 @@
 # Xcode Dead Strings
 
-Find dead localized strings in your Xcode project.
+Find dead localized strings in your Xcode project
 
 ## Installing
 
