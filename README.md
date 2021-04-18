@@ -25,21 +25,21 @@ Clone this project and run `swift build -c release`
 - [ ] Storyboards / xibs
 - [ ] .intentDefinition files
 
-## Examples
+## Use cases
 
-List all dead Strings by file
+### List all dead Strings by file
 
 ```sh
 xcode-dead-strings
 ```
 
-Create Xcode warnings for dead Strings
+### Create Xcode warnings for dead Strings
 
 ```sh
 xcode-dead-strings --xcode
 ```
 
-Immediately delete all dead Strings
+### Immediately delete all identified dead Strings
 
 ```sh
 xcode-dead-strings --delete
@@ -47,33 +47,24 @@ xcode-dead-strings --delete
 
 ## Options
 
-* `--source-path <source-path>`
+```sh
+▶ xcode-dead-strings --help
 
-The path to your source files (relative to your project directory).
-Setting this can greatly improve execution speed.
+USAGE: xcode-dead-strings [<path>] [--silent] [--delete] [--xcode-warnings] [--source-path <source-path>] [--localization-path <localization-path>]
 
-* `--localization-path <localization-path>`
+ARGUMENTS:
+  <path>                  The root path of the iOS directory (default: .)
 
-The path to your localizable `.strings` files (relative to your project directory).
-Setting this can greatly improve execution speed.
-
-* `--delete`
-
-Automatically delete all dead strings from your `.strings` files
-
-* `--xcode-warnings`
-
-For use as an Xcode build phase:
-
-<img width="1170" alt="Screenshot 2021-04-18 at 17 22 51" src="https://user-images.githubusercontent.com/16212751/115150916-c65ea100-a06a-11eb-962a-cd625ac089ce.png">
-
-This will emit Xcode warnings:
-
-<img width="256" alt="Screenshot 2021-04-14 at 20 35 23" src="https://user-images.githubusercontent.com/16212751/114761582-fa7f4c80-9d60-11eb-93a5-066d8067ce68.png">
-
-* `--silent`
-
-Don't show any output
+OPTIONS:
+  --silent                Should output be silenced? 
+  --delete                Delete dead strings from .strings files automatically 
+  --xcode-warnings        Show dead strings as warnings in Xcode 
+  --source-path <source-path>
+                          Path containing the source files to be searched 
+  --localization-path <localization-path>
+                          Path containing the localization files to be searched 
+  -h, --help              Show help information.
+```
 
 ## Limitations ⚠️
 
