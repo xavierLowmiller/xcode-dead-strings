@@ -30,7 +30,7 @@ Clone this project and run `swift build -c release`
 List all dead Strings by file
 
 ```sh
-xcode-dead-strings --source-path Sources --localization-path Sources/Localizable\ Files
+xcode-dead-strings (--source-path Sources) (--localization-path Sources/Localizable\ Files)
 ```
 
 Create Xcode warnings for dead Strings
