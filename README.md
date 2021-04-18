@@ -30,7 +30,7 @@ Clone this project and run `swift build -c release`
 List all dead Strings by file
 
 ```sh
-xcode-dead-strings (--source-path Sources) (--localization-path Sources/Localizable\ Files)
+xcode-dead-strings
 ```
 
 Create Xcode warnings for dead Strings
@@ -65,7 +65,7 @@ Automatically delete all dead strings from your `.strings` files
 
 For use as an Xcode build phase:
 
-<img width="540" alt="Screenshot 2021-04-14 at 20 36 08" src="https://user-images.githubusercontent.com/16212751/114761642-1125a380-9d61-11eb-8105-a3ade9bf428d.png">
+<img width="1170" alt="Screenshot 2021-04-18 at 17 22 51" src="https://user-images.githubusercontent.com/16212751/115150916-c65ea100-a06a-11eb-962a-cd625ac089ce.png">
 
 This will emit Xcode warnings:
 
