@@ -61,7 +61,9 @@ public struct DeadStringsData {
 
         for (url, rangesToDelete) in stringsToDelete {
             let data = FileManager.default.contents(atPath: url.path) ?? Data()
-            var contents = String(decoding: data, as: UTF8.self)
+            var contents = String(data: data, encoding: .utf8)
+                ?? String(data: data, encoding: .utf16)
+                ?? ""
             for range in rangesToDelete {
                 contents.removeSubrange(range)
             }

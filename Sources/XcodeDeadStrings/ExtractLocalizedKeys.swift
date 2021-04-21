@@ -78,7 +78,9 @@ func extractLocalizedKeys(from contents: String, url: URL) -> [LocationStringRes
 
 func extractLocalizedKeys(fromFileAt url: URL) -> [LocationStringResult] {
     guard let data = FileManager.default.contents(atPath: url.path) else { return [] }
-    let contents = String(decoding: data, as: UTF8.self)
+    let contents = String(data: data, encoding: .utf8)
+        ?? String(data: data, encoding: .utf16)
+        ?? ""
     return extractLocalizedKeys(from: contents, url: url)
 }
 
